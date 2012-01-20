@@ -15,5 +15,7 @@
     "node": "~0.6.7"
   },
   "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {
+    "vows":""
+  }
 }
