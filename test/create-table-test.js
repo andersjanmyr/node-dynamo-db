@@ -9,9 +9,9 @@ vows.describe('Create Table').addBatch({
     topic: db.createTable('name', 'key', {}, this.callback),
 
     'we get an exception': function(err, res) {
-      assertIsNotNull(err);
+      assert.isNotNull(err);
     }
   }
-});
+}).export(module);
 
 
