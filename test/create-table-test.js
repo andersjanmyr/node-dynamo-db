@@ -6,10 +6,13 @@ var db = new DynamoDB();
 
 vows.describe('Create Table').addBatch({
   'when calling createTable with no arguments': { 
-    topic: db.createTable('name', 'key', {}, this.callback),
+    topic: function() {
+      db.createTable({}, this.callback);
+    },
 
     'we get an exception': function(err, res) {
       assert.isNotNull(err);
+      assert.isUndefined(res);
     }
   }
 }).export(module);
