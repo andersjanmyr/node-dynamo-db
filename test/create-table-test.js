@@ -1,13 +1,15 @@
 var vows = require('vows'),
     assert = require('assert');
 
-var db = require('dynamo-db');
+var DynamoDB = require('dynamo-db');
+var db = new DynamoDB();
 
 vows.describe('Create Table').addBatch({
   'when calling createTable with no arguments': { 
-    topic: db.createTable(),
+    topic: db.createTable('name', 'key', {}, this.callback),
 
-    'we get an exception': function(topic) {
+    'we get an exception': function(err, res) {
+      assertIsNotNull(err);
     }
   }
 });
