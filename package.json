@@ -1,0 +1,19 @@
+{
+  "author": "Anders Janmyr <anders@janmyr.com> (http://anders.janmyr.com)",
+  "name": "dynamo-db",
+  "description": "A library for working with Amazon DynamoDB",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/andersjanmyr/node-dynamo-db.git"
+  },
+  "main": "lib/dynamo-db",
+  "scripts": {
+    "test": "vows test/*"
+  },
+  "engines": {
+    "node": "~0.6.7"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
