@@ -38,6 +38,18 @@ vows.describe('Security').addBatch({
       var expected = 'GET\niam.amazonaws.com\n/\nAWSAccessKeyID=secret&Action=GetSession&Signature=2';
       assert.equal(topic, expected);
     }
+  },
+  'signRequest': { 
+    topic: security.signRequest('GET', 'iam.amazonaws.com', {
+    'Action': 'GetSession',
+    'Version': 2,
+    'AWSAccessKeyID': 'secret'
+    }),
+
+    'is a proper request': function(topic) {
+      var expected = new RegExp('GET\niam.amazonaws.com\n/\nAWSAccessKeyID=secret&Action=GetSession&Signature=.+&Version=2');
+      assert.matches(topic, expected);
+    }
   }
 }).export(module);
 
