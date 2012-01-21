@@ -2,9 +2,13 @@ var vows = require('vows'),
     assert = require('assert');
 
 var Security = require('dynamo-db').Security;
+
+var access = process.env['S3_KEY'];
+var secret = process.env['S3_SECRET'];
+
 var security = new Security({
-  access: process.env['S3_KEY'],
-  secret: process.env['S3_SECRET']
+  access: access,
+  secret: secret
 });
 
 vows.describe('Security').addBatch({
@@ -24,10 +28,11 @@ vows.describe('Security').addBatch({
   'defaultParams': {
     topic: security.defaultParams(),
     'includes Version, Timestamp, SignatureVersion and SignatureMethod': function(topic) {
-      assert.isNotNull(topic.Version);
+      assert.equal(topic.AWSAccessKeyId, access);
+      assert.equal(topic.Version, '2010-05-08');
       assert.isNotNull(topic.Timestamp);
-      assert.isNotNull(topic.SignatureVersion);
-      assert.isNotNull(topic.SignatureMethod);
+      assert.equal(topic.SignatureVersion, 2);
+      assert.equal(topic.SignatureMethod, 'HmacSHA256');
     }
   }, 
 
@@ -55,18 +60,32 @@ vows.describe('Security').addBatch({
       assert.equal(topic, expected);
     }
   },
-  'signRequest': { 
-    topic: security.signRequest('GET', 'iam.amazonaws.com', '/', {
+  'signedParams': { 
+    topic: security.signedParams('GET', 'iam.amazonaws.com', '/', {
     'Action': 'GetSession',
     'Version': 2,
     'AWSAccessKeyID': 'secret'
     }),
 
-    'is a proper request': function(topic) {
-      var expected = new RegExp('GET\niam.amazonaws.com\n/\nAWSAccessKeyID=secret&Action=GetSession&Signature=.+&Version=2');
-      console.log(topic);
-      assert.matches(topic, expected);
+    'includes a Signature param': function(topic) {
+      assert.include(topic, 'Signature');
+    }
+  },
+  'url': {
+    topic: security.url('host', '/', {a: 'b'}),
+    'returns a proper https url': function(topic) {
+      assert.equal(topic, 'https://host/?a=b');
+    }
+  },
+
+  'getSessionToken': {
+    topic: function() { security.getSessionToken(this.callback); },
+    'returns a valid session token': function(topic, err, token) {
+      console.log(err, token);
+      assert.isNull(err);
+      assert.isNotNull(token);
     }
   }
+
 }).export(module);
 
