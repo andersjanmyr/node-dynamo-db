@@ -1,21 +1,11 @@
 var vows = require('vows'),
     assert = require('assert');
 
-var DynamoDB = require('dynamo-db');
+var DynamoDB = require('dynamo-db').DynamoDB;
 var db = new DynamoDB({
   access: process.env['S3_KEY'],
   secret: process.env['S3_SECRET']
 });
-
-vows.describe('AWS Identity').addBatch({
-  'signRequest': { 
-    topic: db.signRequest('GET', 'sts.amazonaws.com', {}),
-
-    'is an object with key Signature': function(topic) {
-      assert.deepEqual(topic, { 'Signature': 'XXXXXXGETsts.amazonaws.com'});
-    }
-  }
-}).export(module);
 
 vows.describe('DynamoDB').addBatch({
   'authorizationKey': { 
