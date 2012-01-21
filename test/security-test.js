@@ -29,7 +29,7 @@ vows.describe('Security').addBatch({
     topic: security.defaultParams(),
     'includes Version, Timestamp, SignatureVersion and SignatureMethod': function(topic) {
       assert.equal(topic.AWSAccessKeyId, access);
-      assert.equal(topic.Version, '2010-05-08');
+      assert.equal(topic.Version, '2011-06-15');
       assert.isNotNull(topic.Timestamp);
       assert.equal(topic.SignatureVersion, 2);
       assert.equal(topic.SignatureMethod, 'HmacSHA256');
@@ -80,7 +80,7 @@ vows.describe('Security').addBatch({
 
   'getSessionToken': {
     topic: function() { security.getSessionToken(this.callback); },
-    'returns a valid session token': function(topic, err, token) {
+    'returns a valid session token': function(err, token) {
       console.log(err, token);
       assert.isNull(err);
       assert.isNotNull(token);
