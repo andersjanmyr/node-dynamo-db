@@ -15,6 +15,22 @@ vows.describe('Security').addBatch({
       assert.deepEqual(topic, 'pjGpSSOMgmXjnn09HB5ednV6F4tCyIUSEom3ObLqEro=');
     }
   },
+  'timestamp': {
+    topic: security.timestamp(),
+    'conforms to ISO 8601': function(topic) {
+      assert.matches(topic, /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z/);
+    }
+  },
+  'defaultParams': {
+    topic: security.defaultParams(),
+    'includes Version, Timestamp, SignatureVersion and SignatureMethod': function(topic) {
+      assert.isNotNull(topic.Version);
+      assert.isNotNull(topic.Timestamp);
+      assert.isNotNull(topic.SignatureVersion);
+      assert.isNotNull(topic.SignatureMethod);
+    }
+  }, 
+
   'toCanonicalForm': { 
     topic: security.toCanonicalForm({
     'Action': 'GetSession',
@@ -28,7 +44,7 @@ vows.describe('Security').addBatch({
     }
   },
   'toCanonicalRequest': { 
-    topic: security.toCanonicalRequest('GET', 'iam.amazonaws.com', {
+    topic: security.toCanonicalRequest('GET', 'iam.amazonaws.com', '/', {
     'Action': 'GetSession',
     'Signature': 2,
     'AWSAccessKeyID': 'secret'
@@ -40,7 +56,7 @@ vows.describe('Security').addBatch({
     }
   },
   'signRequest': { 
-    topic: security.signRequest('GET', 'iam.amazonaws.com', {
+    topic: security.signRequest('GET', 'iam.amazonaws.com', '/', {
     'Action': 'GetSession',
     'Version': 2,
     'AWSAccessKeyID': 'secret'
