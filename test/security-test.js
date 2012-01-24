@@ -3,8 +3,8 @@ var vows = require('vows'),
 
 var Security = require('dynamo-db').Security;
 
-var access = process.env['S3_KEY'];
-var secret = process.env['S3_SECRET'];
+var access = 'access';
+var secret = 'secret';
 
 var security = new Security({
   access: access,
@@ -76,16 +76,6 @@ vows.describe('Security').addBatch({
     'returns a proper https url': function(topic) {
       assert.equal(topic, 'https://host/?a=b');
     }
-  },
-
-  'getSessionToken': {
-    topic: function() { security.getSessionToken(this.callback); },
-    'returns a valid session token': function(err, token) {
-      console.log(err, token);
-      assert.isNull(err);
-      assert.isNotNull(token);
-    }
   }
-
 }).export(module);
 
