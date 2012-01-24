@@ -1,7 +1,7 @@
 var vows = require('vows'),
     assert = require('assert');
 
-var Security = require('dynamo-db').Security;
+var Security = require('../lib/dynamo-db').Security;
 
 var access = 'access';
 var secret = 'secret';

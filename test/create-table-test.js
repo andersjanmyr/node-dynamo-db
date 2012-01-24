@@ -1,7 +1,7 @@
 var vows = require('vows'),
     assert = require('assert');
 
-var DynamoDB = require('dynamo-db').DynamoDB;
+var DynamoDB = require('../lib/dynamo-db').DynamoDB;
 var db = new DynamoDB({
   access: process.env['S3_KEY'],
   secret: process.env['S3_SECRET']
