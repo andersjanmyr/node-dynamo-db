@@ -3,8 +3,8 @@ var vows = require('vows'),
 
 var Security = require('../lib/dynamo-db').Security;
 
-var access = process.env['S3_KEY'];
-var secret = process.env['S3_SECRET'];
+var access = process.env['AWS_KEY'];
+var secret = process.env['AWS_SECRET'];
 
 var security = new Security({
   access: access,
